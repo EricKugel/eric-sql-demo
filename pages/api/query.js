@@ -7,7 +7,7 @@ export default async function handler(req, res) {
         try {
             // console.log(response);
             if (response?.ok) {
-                res.status(200).json({result: await response.json()});
+                res.status(200).json({result: (await response.json()).result});
             } else {
                 res.status(500).json({message: "Server error"});
             }

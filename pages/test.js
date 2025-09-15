@@ -13,12 +13,11 @@ const Write = () => {
             })
         });
 
-        console.log(response.body);
         const result = await response.json();
-        console.log(result);
-
         if (response?.ok) {
-            setData({...data, result});
+            setData({...data, result: result.result});
+        } else {
+            setData({...data, result: result.message});
         }
     }
 

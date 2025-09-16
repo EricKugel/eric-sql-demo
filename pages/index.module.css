@@ -23,7 +23,7 @@
 
 .textArea {
     resize: vertical;
-    width: 440px;
+    width: 460px;
 }
 
 .message {
@@ -40,4 +40,27 @@
 
 .timestamp {
     float: right;
+}
+
+@media (max-width: 768px) {
+    .formWrapper {
+        width: 360px;
+    }
+
+    .textArea {
+        width: 320px;
+    }
+
+    .message {
+        width: 360px;
+    }
+
+    .signature::after {
+        content:"\a";
+        white-space: pre;
+    }
+
+    .timestamp {
+        float: left;
+    }
 }

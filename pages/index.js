@@ -71,7 +71,8 @@ export default function Board({ board }) {
         {board && 
           board.map((message) => (
             <div className = {styles.message} key = {message[2]}>
-              <span className={styles.signature}>From <b>{message[1]}</b></span> <span className = {styles.timestamp}> {getDateTime(message[2])} </span> <br/><br/>
+              <span className={styles.signature}>From <b>{message[1]}</b>
+              </span> <span className = {styles.timestamp}> {getDateTime(message[2])} </span> <br/><br/>
               {message[0]}
             </div>
           ))

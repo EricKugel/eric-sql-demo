@@ -1,0 +1,43 @@
+.header {
+    text-align: center;
+    font-size: 36px;
+    margin-top: 50px;
+}
+
+.subHeader {
+    text-align: center;
+    font-size: 24px;
+}
+
+.formWrapper {
+    width: 500px;
+    padding: 20px;
+    border: 1px solid black;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.inputLabel {
+    margin-bottom: 5px;
+}
+
+.textArea {
+    resize: vertical;
+    width: 440px;
+}
+
+.message {
+    width: 500px;
+    padding: 20px;
+    border: 1px solid black;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.signature {
+    text-align: left;
+}
+
+.timestamp {
+    float: right;
+}

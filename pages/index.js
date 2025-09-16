@@ -1,67 +1,94 @@
-import Head from "next/head";
-import styles from "../styles/Home.module.css";
+import { useState } from "react";
+import { useRouter } from "next/navigation"
 
-export default function Home() {
+import { query } from "../helpers/eric-sql"
+
+import { toast } from "react-hot-toast"
+
+import styles from "./index.module.css"
+
+export default function Board({ board }) {
+  const router = useRouter();
+  const [data, setData] = useState({"content": "", "name": ""});
+  
+  const post = async () => {
+    const response = await fetch("/api/post", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        content: data.content,
+        name: data.name
+      })
+    });
+
+    if (response?.ok) {
+      toast.success("Posted!")
+      // router.refresh();
+    } else {
+      toast.error("")
+    }
+  };
+
+  const getDateTime = (timestamp) => {
+        const date = new Date(timestamp)
+        const dateString = date.toLocaleDateString(); // e.g., "3/15/2023" (depending on locale)
+        const timeString = date.toLocaleTimeString(); // e.g., "12:00:00 PM" (depending on locale)
+        return `${dateString} ${timeString}`;
+  }
+
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          This is Eric's EricSQL demonstration!
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{" "}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{" "}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+    <div>
+      <div className = {styles.header}>EricSQL Demo</div>
+      <div className = {styles.subHeader}>Leave a message!</div>
+      <div className = {styles.formWrapper}>
+        <form>
+          <div>
+            <p className = {styles.inputLabel}>Your name: </p>
+            <input
+              type={"text"}
+              onChange={(e) => {setData({...data, name: e.target.value})}}
+              value={data.name}
+            ></input>
+          </div>
+          <div>
+            <br/>
+            <p className = {styles.inputLabel}>Your message:</p>
+            <textarea 
+              onChange = {(e) => {setData({...data, content: e.target.value})}}
+              value={data.content}
+              className = {styles.textArea}
+            ></textarea>
+          </div>
+          <br/>
+          <div>
+            <button onClick={post}><b>Post</b></button>
+          </div>
+        </form>
+      </div>
+      <div>
+        {board && 
+          board.map((message) => (
+            <div className = {styles.message} key = {message[2]}>
+              <span className={styles.signature}>From <b>{message[1]}</b></span> <span className = {styles.timestamp}> {getDateTime(message[2])} </span> <br/><br/>
+              {message[0]}
+            </div>
+          ))
+        }
+      </div>
     </div>
+    
   );
+}
+
+export const getServerSideProps = async (context) => {
+  try {
+    const [board] = await query("SELECT * FROM Board ORDER BY Timestamp desc");
+    return {
+      props: { board }
+    };
+  } catch(e) {
+    console.error(e);
+  }
 }

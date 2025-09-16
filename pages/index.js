@@ -39,7 +39,7 @@ export default function Board({ board }) {
   }
 
   return (
-    <div>
+    <div className = {styles.pageWrapper}>
       <div className = {styles.header}>EricSQL Demo</div>
       <div className = {styles.subHeader}>Leave a message!</div>
       <div className = {styles.formWrapper}>
@@ -73,7 +73,7 @@ export default function Board({ board }) {
             <div className = {styles.message} key = {message[2]}>
               <span className={styles.signature}>From <b>{message[1]}</b>
               </span> <span className = {styles.timestamp}> {getDateTime(message[2])} </span> <br/><br/>
-              {message[0]}
+              {message[0].replaceAll("\\\"", "\"")}
             </div>
           ))
         }

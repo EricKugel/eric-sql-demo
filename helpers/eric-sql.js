@@ -21,5 +21,5 @@ export const query = async (query) => {
 }
 
 export const sanitize_string = (string) => {
-    return string.replace("\\", "\\\\").replace("'", "\\'").replace('"', '\\"');
+    return string.replaceAll("\\", "\\\\").replaceAll("'", "\\'").replaceAll('"', '\\"');
 }

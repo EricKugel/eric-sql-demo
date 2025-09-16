@@ -1,3 +1,7 @@
+.pageWrapper {
+    padding-bottom: 50px;
+}
+
 .header {
     text-align: center;
     font-size: 36px;
